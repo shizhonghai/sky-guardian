@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { useApp } from '../context/store';
 import VideoPlayer from '../components/VideoPlayer';
-import { Search, List, Grid, Filter } from 'lucide-react';
+import { Search, List, Grid } from 'lucide-react';
 
 const Monitor: React.FC = () => {
   const { cameras, activeCamera, setActiveCamera, settings } = useApp();
@@ -13,10 +14,13 @@ const Monitor: React.FC = () => {
     c.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Calculate actual online count (Online + Alarm)
+  const onlineCount = filteredCameras.filter(c => c.status === 'ONLINE' || c.status === 'ALARM').length;
+
   return (
-    <div className="flex flex-col h-full bg-slate-900 pb-20">
+    <div className="flex flex-col h-full bg-transparent pb-20">
       {/* Active Video Area */}
-      <div className="sticky top-0 z-10 w-full bg-black shadow-xl">
+      <div className="sticky top-0 z-10 w-full bg-black shadow-2xl">
         {activeCamera ? (
           <VideoPlayer camera={activeCamera} settings={settings} isLive={true} />
         ) : (
@@ -36,17 +40,16 @@ const Monitor: React.FC = () => {
             placeholder="搜索点位名称/区域..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-800 text-white pl-10 pr-4 py-3 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 placeholder-slate-500"
+            className="w-full bg-slate-800/60 backdrop-blur-md text-white pl-10 pr-4 py-3 rounded-lg border border-slate-700/50 focus:outline-none focus:border-blue-500 placeholder-slate-500"
           />
         </div>
 
         {/* Toolbar */}
         <div className="flex justify-between items-center text-slate-400 text-sm">
-          <span>{filteredCameras.length} 个在线设备</span>
+          <span className="font-medium text-slate-300 drop-shadow">在线: {onlineCount} <span className="text-slate-500 mx-1">/</span> 总数: {filteredCameras.length}</span>
           <div className="flex gap-2">
-             <button onClick={() => setViewMode('LIST')} className={`p-2 rounded ${viewMode === 'LIST' ? 'bg-blue-600 text-white' : 'bg-slate-800'}`}><List size={18} /></button>
-             <button onClick={() => setViewMode('GRID')} className={`p-2 rounded ${viewMode === 'GRID' ? 'bg-blue-600 text-white' : 'bg-slate-800'}`}><Grid size={18} /></button>
-             <button className="p-2 rounded bg-slate-800"><Filter size={18} /></button>
+             <button onClick={() => setViewMode('LIST')} className={`p-2 rounded backdrop-blur-sm transition-colors ${viewMode === 'LIST' ? 'bg-blue-600 text-white' : 'bg-slate-800/50 border border-white/5'}`}><List size={18} /></button>
+             <button onClick={() => setViewMode('GRID')} className={`p-2 rounded backdrop-blur-sm transition-colors ${viewMode === 'GRID' ? 'bg-blue-600 text-white' : 'bg-slate-800/50 border border-white/5'}`}><Grid size={18} /></button>
           </div>
         </div>
 
@@ -57,7 +60,7 @@ const Monitor: React.FC = () => {
               <div 
                 key={cam.id} 
                 onClick={() => setActiveCamera(cam)}
-                className={`flex gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${activeCamera?.id === cam.id ? 'bg-slate-800 border-blue-500' : 'bg-slate-800/50 border-transparent hover:bg-slate-800'}`}
+                className={`flex gap-3 p-3 rounded-lg border cursor-pointer transition-colors backdrop-blur-sm ${activeCamera?.id === cam.id ? 'bg-slate-800/80 border-blue-500 shadow-lg' : 'bg-slate-800/40 border-white/5 hover:bg-slate-800/60'}`}
               >
                 <div className="relative w-24 h-16 bg-black rounded overflow-hidden flex-shrink-0">
                   <img src={cam.thumbnail} className="w-full h-full object-cover" alt="" />
@@ -66,7 +69,7 @@ const Monitor: React.FC = () => {
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <div className="flex justify-between items-start">
                     <h3 className={`font-medium truncate ${activeCamera?.id === cam.id ? 'text-blue-400' : 'text-slate-200'}`}>{cam.name}</h3>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${cam.status === 'ONLINE' ? 'bg-green-900 text-green-300' : cam.status === 'ALARM' ? 'bg-red-900 text-red-300' : 'bg-gray-700 text-gray-400'}`}>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${cam.status === 'ONLINE' ? 'bg-green-900/50 text-green-300' : cam.status === 'ALARM' ? 'bg-red-900/50 text-red-300' : 'bg-gray-700/50 text-gray-400'}`}>
                       {cam.status === 'ONLINE' ? '在线' : cam.status === 'ALARM' ? '告警' : '离线'}
                     </span>
                   </div>
@@ -84,10 +87,10 @@ const Monitor: React.FC = () => {
                  <div 
                   key={cam.id}
                   onClick={() => setActiveCamera(cam)}
-                  className={`relative aspect-video rounded-lg overflow-hidden border-2 ${activeCamera?.id === cam.id ? 'border-blue-500' : 'border-transparent'}`}
+                  className={`relative aspect-video rounded-lg overflow-hidden border-2 shadow-lg ${activeCamera?.id === cam.id ? 'border-blue-500' : 'border-transparent'}`}
                  >
                     <img src={cam.thumbnail} className="w-full h-full object-cover" alt="" />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1 text-[10px] text-white truncate">
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1 text-[10px] text-white truncate backdrop-blur-[2px]">
                       {cam.name}
                     </div>
                     {cam.status === 'ALARM' && <div className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-lg shadow-red-500/50"></div>}

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useApp } from '../context/store';
 import { ArrowLeft, ToggleLeft, ToggleRight, Save, LogOut, Radio, Server } from 'lucide-react';
@@ -13,11 +14,11 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-900">
+    <div className="flex flex-col h-full bg-transparent">
       {/* Fixed Header */}
-      <div className="flex-none p-4 bg-slate-950 border-b border-slate-800 shadow-sm z-10">
+      <div className="flex-none p-4 bg-blue-950/60 backdrop-blur-md border-b border-white/10 shadow-sm z-10">
           <div className="flex items-center gap-3">
-               <button onClick={() => navigate(-1)} className="p-1 text-slate-400"><ArrowLeft /></button>
+               <button onClick={() => navigate(-1)} className="p-1 text-slate-400 hover:text-white"><ArrowLeft /></button>
                <h1 className="text-xl font-bold text-white">系统设置</h1>
           </div>
       </div>
@@ -26,25 +27,25 @@ const Settings: React.FC = () => {
       <div className="flex-1 overflow-y-auto p-4">
         <div className="space-y-6">
             {/* User Info */}
-            <section className="bg-slate-800 p-4 rounded-xl flex justify-between items-center">
+            <section className="bg-slate-800/50 backdrop-blur-md border border-white/5 p-4 rounded-xl flex justify-between items-center shadow-lg">
               <div>
                 <h3 className="text-white font-medium">{user?.name || '管理员'}</h3>
-                <p className="text-xs text-slate-500">角色: {user?.role || 'User'}</p>
+                <p className="text-xs text-slate-400">角色: {user?.role || 'User'}</p>
               </div>
-              <button onClick={handleLogout} className="text-red-400 text-sm flex items-center gap-1">
+              <button onClick={handleLogout} className="text-red-400 text-sm flex items-center gap-1 bg-red-900/20 px-3 py-1.5 rounded-lg border border-red-900/30 hover:bg-red-900/40 transition-colors">
                 <LogOut size={16} /> 退出
               </button>
             </section>
 
             {/* Video Source Quality */}
-            <section className="bg-slate-800 p-4 rounded-xl">
+            <section className="bg-slate-800/50 backdrop-blur-md border border-white/5 p-4 rounded-xl shadow-lg">
                <h3 className="text-sm text-slate-400 uppercase font-semibold mb-4">视频画质</h3>
-               <div className="flex gap-2 bg-slate-900 p-1 rounded-lg">
+               <div className="flex gap-2 bg-slate-900/50 p-1 rounded-lg">
                   {['HD', 'SD', 'AUTO'].map(type => (
                     <button 
                       key={type}
                       onClick={() => updateSettings({ videoSourceType: type as any })}
-                      className={`flex-1 py-2 text-sm font-medium rounded transition-colors ${settings.videoSourceType === type ? 'bg-blue-600 text-white shadow' : 'text-slate-400'}`}
+                      className={`flex-1 py-2 text-sm font-medium rounded transition-colors ${settings.videoSourceType === type ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
                     >
                       {type === 'AUTO' ? '自动' : type}
                     </button>
@@ -52,11 +53,11 @@ const Settings: React.FC = () => {
                </div>
             </section>
 
-            {/* Source Protocol Configuration (New) */}
-            <section className="bg-slate-800 p-4 rounded-xl">
+            {/* Source Protocol Configuration */}
+            <section className="bg-slate-800/50 backdrop-blur-md border border-white/5 p-4 rounded-xl shadow-lg">
                <div className="flex items-center gap-2 mb-4">
                   <Server size={16} className="text-blue-400" />
-                  <h3 className="text-sm text-slate-400 uppercase font-semibold">来源类型配置</h3>
+                  <h3 className="text-sm text-slate-400 uppercase font-semibold">来源类型</h3>
                </div>
                
                <div className="space-y-3">
@@ -70,8 +71,8 @@ const Settings: React.FC = () => {
                       onClick={() => updateSettings({ sourceProtocol: protocol.id as any })}
                       className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${
                         settings.sourceProtocol === protocol.id 
-                          ? 'bg-blue-900/20 border-blue-500/50' 
-                          : 'bg-slate-700/30 border-slate-700 hover:bg-slate-700/50'
+                          ? 'bg-blue-900/30 border-blue-500/50 shadow-inner' 
+                          : 'bg-slate-700/20 border-white/5 hover:bg-slate-700/30'
                       }`}
                     >
                        <div className="flex flex-col">
@@ -89,7 +90,7 @@ const Settings: React.FC = () => {
             </section>
 
             {/* PTZ Speed */}
-            <section className="bg-slate-800 p-4 rounded-xl">
+            <section className="bg-slate-800/50 backdrop-blur-md border border-white/5 p-4 rounded-xl shadow-lg">
                <div className="flex justify-between mb-2">
                   <h3 className="text-sm text-slate-400 uppercase font-semibold">云台速度</h3>
                   <span className="text-blue-400 font-bold">{settings.ptzSpeed}</span>
@@ -108,14 +109,14 @@ const Settings: React.FC = () => {
             </section>
 
              {/* Snapshot Mode */}
-             <section className="bg-slate-800 p-4 rounded-xl flex justify-between items-center">
+             <section className="bg-slate-800/50 backdrop-blur-md border border-white/5 p-4 rounded-xl flex justify-between items-center shadow-lg">
                <div>
                   <h3 className="text-sm text-slate-400 uppercase font-semibold">抓拍模式</h3>
                   <p className="text-xs text-slate-500 mt-1">{settings.snapshotMode === 'BURST' ? '连拍 (3张)' : '单张抓拍'}</p>
                </div>
                <button 
                  onClick={() => updateSettings({ snapshotMode: settings.snapshotMode === 'SINGLE' ? 'BURST' : 'SINGLE' })}
-                 className="text-blue-500"
+                 className="text-blue-500 hover:text-blue-400 transition-colors"
                >
                  {settings.snapshotMode === 'BURST' ? <ToggleRight size={40} /> : <ToggleLeft size={40} className="text-slate-600" />}
                </button>

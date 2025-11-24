@@ -1,5 +1,5 @@
 {
-  "name": "天穹智守移动端",
+  "name": "资源管理系统移动端APP",
   "description": "移动端智能安防监控系统，包含实时视频、云台控制、AI场景分析、报警流转及车辆管控功能。",
   "requestFramePermissions": [
     "camera",
