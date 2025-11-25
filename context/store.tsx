@@ -21,11 +21,12 @@ const getNowString = () => {
 };
 
 // Mock Data (Translated) - All set to PTZ to enable controls for all
+// Coordinates centered around Shangrao City Center (Xinzhou District) [117.971185, 28.44442]
 const MOCK_CAMERAS: Camera[] = [
-  { id: '1', name: '主要入口大门', location: 'A区', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=1', coordinates: { x: 20, y: 30 } },
-  { id: '2', name: 'B区停车场', location: 'B区', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=2', coordinates: { x: 60, y: 25 } },
-  { id: '3', name: '仓库通道', location: 'C区', status: CameraStatus.ALARM, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=3', coordinates: { x: 40, y: 70 } },
-  { id: '4', name: '北侧围栏', location: 'D区', status: CameraStatus.OFFLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=4', coordinates: { x: 80, y: 80 } },
+  { id: '1', name: '主要入口大门', location: 'A区', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=1', coordinates: { x: 20, y: 30 }, latLng: [117.971185, 28.44442] },
+  { id: '2', name: 'B区停车场', location: 'B区', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=2', coordinates: { x: 60, y: 25 }, latLng: [117.975200, 28.44650] },
+  { id: '3', name: '仓库通道', location: 'C区', status: CameraStatus.ALARM, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=3', coordinates: { x: 40, y: 70 }, latLng: [117.968500, 28.44300] },
+  { id: '4', name: '北侧围栏', location: 'D区', status: CameraStatus.OFFLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=4', coordinates: { x: 80, y: 80 }, latLng: [117.972500, 28.44100] },
 ];
 
 const MOCK_ALARMS: Alarm[] = [
@@ -35,12 +36,12 @@ const MOCK_ALARMS: Alarm[] = [
 ];
 
 const MOCK_TODOS: TodoItem[] = [
-  { 
-    id: 't1', 
-    title: 'A区消防器材巡检', 
-    priority: 'MEDIUM', 
-    dueDate: formatDate(today, '18:00'), 
-    type: 'PATROL', 
+  {
+    id: 't1',
+    title: 'A区消防器材巡检',
+    priority: 'MEDIUM',
+    dueDate: formatDate(today, '18:00'),
+    type: 'PATROL',
     status: 'OPEN',
     description: '请对A区所有灭火器压力表进行检查，并拍照记录。',
     initiator: '系统自动生成',
@@ -50,12 +51,12 @@ const MOCK_TODOS: TodoItem[] = [
       { id: 'l1', action: 'CREATE', operator: '系统', timestamp: formatDate(today, '08:00'), content: '自动触发每日巡检任务' }
     ]
   },
-  { 
-    id: 't2', 
-    title: '复核 #A2 烟雾报警', 
-    priority: 'HIGH', 
-    dueDate: formatDate(today, '12:00'), 
-    type: 'ALARM_REVIEW', 
+  {
+    id: 't2',
+    title: '复核 #A2 烟雾报警',
+    priority: 'HIGH',
+    dueDate: formatDate(today, '12:00'),
+    type: 'ALARM_REVIEW',
     status: 'OPEN',
     relatedAlarmId: 'a2',
     description: '厨房区域检测到烟雾报警，请携带设备前往现场核实情况。',
@@ -67,12 +68,12 @@ const MOCK_TODOS: TodoItem[] = [
       { id: 'l3', action: 'ASSIGN', operator: '王队长', timestamp: formatDate(today, '09:20'), content: '指派给当前用户处理' }
     ]
   },
-  { 
-    id: 't3', 
-    title: '维修 #4 号摄像机连接问题', 
-    priority: 'MEDIUM', 
-    dueDate: formatDate(today, '17:00'), 
-    type: 'ISSUE', 
+  {
+    id: 't3',
+    title: '维修 #4 号摄像机连接问题',
+    priority: 'MEDIUM',
+    dueDate: formatDate(today, '17:00'),
+    type: 'ISSUE',
     status: 'OPEN',
     description: '北侧围栏摄像头离线，请检查网络连接及供电情况。',
     initiator: '当前用户',
@@ -135,12 +136,12 @@ const MOCK_TODOS: TodoItem[] = [
     createdAt: formatDate(today, '09:00'),
     logs: [{id: 'l_f2', action: 'CREATE', operator: '系统', timestamp: formatDate(today, '09:00'), content: '物联网设备自检异常'}]
   },
-  { 
-    id: 't_done_1', 
-    title: '处理黑名单车辆告警', 
-    priority: 'HIGH', 
-    dueDate: formatDate(yesterday, '09:00'), 
-    type: 'ALARM_REVIEW', 
+  {
+    id: 't_done_1',
+    title: '处理黑名单车辆告警',
+    priority: 'HIGH',
+    dueDate: formatDate(yesterday, '09:00'),
+    type: 'ALARM_REVIEW',
     status: 'DONE',
     relatedAlarmId: 'a3',
     description: '赣E·88888 车辆进入，请拦截。',
@@ -148,21 +149,21 @@ const MOCK_TODOS: TodoItem[] = [
     assignee: '当前用户',
     createdAt: formatDate(yesterday, '08:30'),
     logs: [
-       { id: 'l5', action: 'CREATE', operator: '系统', timestamp: formatDate(yesterday, '08:30'), content: '报警自动派单' },
-       { id: 'l6', action: 'CLOSE', operator: '当前用户', timestamp: formatDate(yesterday, '08:45'), content: '已拦截并登记信息' }
+      { id: 'l5', action: 'CREATE', operator: '系统', timestamp: formatDate(yesterday, '08:30'), content: '报警自动派单' },
+      { id: 'l6', action: 'CLOSE', operator: '当前用户', timestamp: formatDate(yesterday, '08:45'), content: '已拦截并登记信息' }
     ]
   }
 ];
 
 // Raw Data Definitions with Dots
 const RAW_VEHICLES = [
-  { 
-    id: 'v1', 
-    plate: '赣E·A8888', 
-    color: '黑色', 
-    type: '轿车', 
-    timestamp: formatDate(today, '10:45:22'), 
-    location: 'A号门进口', 
+  {
+    id: 'v1',
+    plate: '赣E·A8888',
+    color: '黑色',
+    type: '轿车',
+    timestamp: formatDate(today, '10:45:22'),
+    location: 'A号门进口',
     isWatchlisted: true,
     ownerName: '张** (重点关注)',
     speed: 15,
@@ -170,13 +171,13 @@ const RAW_VEHICLES = [
     lane: 1,
     confidence: 99.2
   },
-  { 
-    id: 'v2', 
-    plate: '赣E·F29102', 
-    color: '白色', 
-    type: '混动SUV', 
-    timestamp: formatDate(today, '10:42:15'), 
-    location: 'B号门出口', 
+  {
+    id: 'v2',
+    plate: '赣E·F29102',
+    color: '白色',
+    type: '混动SUV',
+    timestamp: formatDate(today, '10:42:15'),
+    location: 'B号门出口',
     isWatchlisted: false,
     ownerName: '李**',
     speed: 24,
@@ -184,13 +185,13 @@ const RAW_VEHICLES = [
     lane: 2,
     confidence: 98.5
   },
-  { 
-    id: 'v3', 
-    plate: '赣E·3X921', 
-    color: '银灰', 
-    type: 'MPV', 
-    timestamp: formatDate(today, '10:12:33'), 
-    location: '地下车库入口', 
+  {
+    id: 'v3',
+    plate: '赣E·3X921',
+    color: '银灰',
+    type: 'MPV',
+    timestamp: formatDate(today, '10:12:33'),
+    location: '地下车库入口',
     isWatchlisted: false,
     ownerName: '王**',
     speed: 12,
@@ -198,13 +199,13 @@ const RAW_VEHICLES = [
     lane: 1,
     confidence: 99.8
   },
-  { 
-    id: 'v4', 
-    plate: '赣E·99120', 
-    color: '蓝色', 
-    type: '货车', 
-    timestamp: formatDate(today, '09:55:10'), 
-    location: 'C区货运通道', 
+  {
+    id: 'v4',
+    plate: '赣E·99120',
+    color: '蓝色',
+    type: '货车',
+    timestamp: formatDate(today, '09:55:10'),
+    location: 'C区货运通道',
     isWatchlisted: false,
     ownerName: '物流配送',
     speed: 10,
@@ -212,13 +213,13 @@ const RAW_VEHICLES = [
     lane: 3,
     confidence: 97.2
   },
-  { 
-    id: 'v5', 
-    plate: '赣E·B2201', 
-    color: '红色', 
-    type: '轿车', 
-    timestamp: formatDate(today, '09:30:45'), 
-    location: 'A号门进口', 
+  {
+    id: 'v5',
+    plate: '赣E·B2201',
+    color: '红色',
+    type: '轿车',
+    timestamp: formatDate(today, '09:30:45'),
+    location: 'A号门进口',
     isWatchlisted: false,
     ownerName: '刘**',
     speed: 18,
@@ -226,13 +227,13 @@ const RAW_VEHICLES = [
     lane: 2,
     confidence: 99.1
   },
-  { 
-    id: 'v6', 
-    plate: '赣E·D55123', 
-    color: '白色', 
-    type: '新能源', 
-    timestamp: formatDate(today, '08:15:20'), 
-    location: '东门访客通道', 
+  {
+    id: 'v6',
+    plate: '赣E·D55123',
+    color: '白色',
+    type: '新能源',
+    timestamp: formatDate(today, '08:15:20'),
+    location: '东门访客通道',
     isWatchlisted: true,
     ownerName: '赵** (未登记)',
     speed: 5,
@@ -240,13 +241,13 @@ const RAW_VEHICLES = [
     lane: 1,
     confidence: 96.5
   },
-  { 
-    id: 'v7', 
-    plate: '赣E·8811A', 
-    color: '黑色', 
-    type: '轿车', 
-    timestamp: formatDate(today, '07:45:00'), 
-    location: '地下车库出口', 
+  {
+    id: 'v7',
+    plate: '赣E·8811A',
+    color: '黑色',
+    type: '轿车',
+    timestamp: formatDate(today, '07:45:00'),
+    location: '地下车库出口',
     isWatchlisted: false,
     ownerName: '陈**',
     speed: 20,
@@ -254,13 +255,13 @@ const RAW_VEHICLES = [
     lane: 1,
     confidence: 99.5
   },
-  { 
-    id: 'v8', 
-    plate: '赣E·C0021', 
-    color: '银色', 
-    type: '面包车', 
-    timestamp: formatDate(yesterday, '18:30:22'), 
-    location: '后勤通道', 
+  {
+    id: 'v8',
+    plate: '赣E·C0021',
+    color: '银色',
+    type: '面包车',
+    timestamp: formatDate(yesterday, '18:30:22'),
+    location: '后勤通道',
     isWatchlisted: false,
     ownerName: '食堂采购',
     speed: 15,
@@ -268,13 +269,13 @@ const RAW_VEHICLES = [
     lane: 1,
     confidence: 98.1
   },
-  { 
-    id: 'v9', 
-    plate: '赣E·51920', 
-    color: '香槟金', 
-    type: '轿车', 
-    timestamp: formatDate(yesterday, '17:20:11'), 
-    location: 'A号门出口', 
+  {
+    id: 'v9',
+    plate: '赣E·51920',
+    color: '香槟金',
+    type: '轿车',
+    timestamp: formatDate(yesterday, '17:20:11'),
+    location: 'A号门出口',
     isWatchlisted: false,
     ownerName: '吴**',
     speed: 25,
@@ -282,13 +283,13 @@ const RAW_VEHICLES = [
     lane: 2,
     confidence: 99.0
   },
-  { 
-    id: 'v10', 
-    plate: '赣E·X1102', 
-    color: '白色', 
-    type: 'SUV', 
-    timestamp: formatDate(yesterday, '14:10:05'), 
-    location: 'B号门进口', 
+  {
+    id: 'v10',
+    plate: '赣E·X1102',
+    color: '白色',
+    type: 'SUV',
+    timestamp: formatDate(yesterday, '14:10:05'),
+    location: 'B号门进口',
     isWatchlisted: false,
     ownerName: '郑**',
     speed: 22,
@@ -296,13 +297,13 @@ const RAW_VEHICLES = [
     lane: 1,
     confidence: 98.8
   },
-  { 
-    id: 'v11', 
-    plate: '赣E·D92115', 
-    color: '绿色', 
-    type: '新能源', 
-    timestamp: formatDate(yesterday, '12:05:30'), 
-    location: '地下车库入口', 
+  {
+    id: 'v11',
+    plate: '赣E·D92115',
+    color: '绿色',
+    type: '新能源',
+    timestamp: formatDate(yesterday, '12:05:30'),
+    location: '地下车库入口',
     isWatchlisted: false,
     ownerName: '周**',
     speed: 10,
@@ -310,13 +311,13 @@ const RAW_VEHICLES = [
     lane: 2,
     confidence: 99.3
   },
-  { 
-    id: 'v12', 
-    plate: '赣E·P3021', 
-    color: '灰色', 
-    type: '轿车', 
-    timestamp: formatDate(yesterday, '09:45:18'), 
-    location: 'A号门进口', 
+  {
+    id: 'v12',
+    plate: '赣E·P3021',
+    color: '灰色',
+    type: '轿车',
+    timestamp: formatDate(yesterday, '09:45:18'),
+    location: 'A号门进口',
     isWatchlisted: true,
     ownerName: '黄** (欠费预警)',
     speed: 16,
@@ -342,7 +343,7 @@ interface AppState {
   settings: AppSettings;
   vehicles: VehicleRecord[];
   toasts: Toast[];
-  
+
   // Actions
   login: () => void;
   logout: () => void;
@@ -408,7 +409,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       showToast('收到新的报警消息', 'error');
 
       // Schedule next run with random delay between 30s and 60s
-      const nextDelay = Math.floor(Math.random() * 30000) + 30000; 
+      const nextDelay = Math.floor(Math.random() * 30000) + 30000;
       timeoutId = setTimeout(runSimulation, nextDelay);
     };
 
@@ -428,7 +429,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!alarm) return;
 
     const newIssueId = `issue_${Date.now()}`;
-    
+
     // 1. Create Issue
     const newIssue: TodoItem = {
       id: newIssueId,
@@ -456,8 +457,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTodos(prev => [newIssue, ...prev]);
 
     // 2. Update Alarm Status & Link
-    setAlarms(prev => prev.map(a => 
-      a.id === alarmId ? { ...a, status: AlarmStatus.PROCESSING, relatedIssueId: newIssueId } : a
+    setAlarms(prev => prev.map(a =>
+        a.id === alarmId ? { ...a, status: AlarmStatus.PROCESSING, relatedIssueId: newIssueId } : a
     ));
 
     showToast('工单已生成，已添加至待办事项', 'success');
@@ -488,7 +489,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       return updatedIssue;
     }));
-    
+
     showToast(action === 'COMPLETE' ? '工单已办结' : '处理记录已提交', 'success');
   };
 
@@ -501,8 +502,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const toggleVehicleWatchlist = (id: string) => {
-    setVehicles(prev => prev.map(v => 
-      v.id === id ? { ...v, isWatchlisted: !v.isWatchlisted } : v
+    setVehicles(prev => prev.map(v =>
+        v.id === id ? { ...v, isWatchlisted: !v.isWatchlisted } : v
     ));
   };
 
@@ -516,29 +517,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   return (
-    <AppContext.Provider value={{
-      isAuthenticated,
-      user,
-      cameras,
-      activeCamera,
-      alarms,
-      todos,
-      settings,
-      vehicles,
-      toasts,
-      login,
-      logout,
-      setActiveCamera,
-      updateAlarmStatus,
-      updateSettings,
-      addAlarm,
-      toggleVehicleWatchlist,
-      showToast,
-      createIssueFromAlarm,
-      handleIssue
-    }}>
-      {children}
-    </AppContext.Provider>
+      <AppContext.Provider value={{
+        isAuthenticated,
+        user,
+        cameras,
+        activeCamera,
+        alarms,
+        todos,
+        settings,
+        vehicles,
+        toasts,
+        login,
+        logout,
+        setActiveCamera,
+        updateAlarmStatus,
+        updateSettings,
+        addAlarm,
+        toggleVehicleWatchlist,
+        showToast,
+        createIssueFromAlarm,
+        handleIssue
+      }}>
+        {children}
+      </AppContext.Provider>
   );
 };
 

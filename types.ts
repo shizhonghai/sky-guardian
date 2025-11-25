@@ -12,7 +12,8 @@ export interface Camera {
   status: CameraStatus;
   thumbnail: string;
   type: 'DOME' | 'BULLET' | 'PTZ';
-  coordinates: { x: number; y: number }; // Percentage on map
+  coordinates: { x: number; y: number }; // Percentage on legacy map
+  latLng: [number, number]; // [Longitude, Latitude] for AMap
 }
 
 export enum AlarmType {
