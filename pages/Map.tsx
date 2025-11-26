@@ -50,8 +50,8 @@ const MapPage: React.FC = () => {
       try {
         console.log("Initializing AMap...");
         const map = new window.AMap.Map(mapContainerRef.current, {
-          zoom: 15, // Standard view for 2D
-          center: [117.971185, 28.44442], // Shangrao City Center (Xinzhou District)
+          zoom: 13.5, // Zoom Level
+          center: [117.80053, 27.936124], // Center
           viewMode: '2D', // Enable 2D Mode
           pitch: 0,
           rotation: 0,

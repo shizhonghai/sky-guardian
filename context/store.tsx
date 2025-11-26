@@ -21,12 +21,12 @@ const getNowString = () => {
 };
 
 // Mock Data (Translated) - All set to PTZ to enable controls for all
-// Coordinates centered around Shangrao City Center (Xinzhou District) [117.971185, 28.44442]
+// Coordinates centered around [117.80053, 27.936124] and scattered further apart
 const MOCK_CAMERAS: Camera[] = [
-  { id: '1', name: '主要入口大门', location: 'A区', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=1', coordinates: { x: 20, y: 30 }, latLng: [117.971185, 28.44442] },
-  { id: '2', name: 'B区停车场', location: 'B区', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=2', coordinates: { x: 60, y: 25 }, latLng: [117.975200, 28.44650] },
-  { id: '3', name: '仓库通道', location: 'C区', status: CameraStatus.ALARM, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=3', coordinates: { x: 40, y: 70 }, latLng: [117.968500, 28.44300] },
-  { id: '4', name: '北侧围栏', location: 'D区', status: CameraStatus.OFFLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=4', coordinates: { x: 80, y: 80 }, latLng: [117.972500, 28.44100] },
+  { id: '1', name: '主要入口大门', location: 'A区-北', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=1', coordinates: { x: 20, y: 30 }, latLng: [117.80053, 27.94150] }, // North + ~0.005
+  { id: '2', name: 'B区停车场', location: 'B区-东', status: CameraStatus.ONLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=2', coordinates: { x: 60, y: 25 }, latLng: [117.80750, 27.93612] }, // East + ~0.007
+  { id: '3', name: '仓库通道', location: 'C区-西', status: CameraStatus.ALARM, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=3', coordinates: { x: 40, y: 70 }, latLng: [117.79350, 27.93650] }, // West - ~0.007
+  { id: '4', name: '北侧围栏', location: 'D区-南', status: CameraStatus.OFFLINE, type: 'PTZ', thumbnail: 'https://picsum.photos/800/450?random=4', coordinates: { x: 80, y: 80 }, latLng: [117.80100, 27.93100] }, // South - ~0.005
 ];
 
 const MOCK_ALARMS: Alarm[] = [
